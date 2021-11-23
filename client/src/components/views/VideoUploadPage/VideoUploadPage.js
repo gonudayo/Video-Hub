@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Typography, Button, Form, message, Input, Icon } from 'antd';
 import Dropzone from 'react-dropzone';
-import axios from 'axios';
+import Axios from 'axios';
 import { useSelector } from 'react-redux';
 
 const { TextArea } = Input;
@@ -49,7 +49,7 @@ function VideoUploadPage(props) {
 		}
 		formData.append("file", files[0])
 		
-		axios.post('/api/video/uploadfiles', formData, config)
+		Axios.post('/api/video/uploadfiles', formData, config)
 			.then(response => {
 			if(response.data.success) {
 				console.log(response.data)
@@ -60,7 +60,7 @@ function VideoUploadPage(props) {
 				
 				setFilePath(response.data.url)
 				
-				axios.post('/api/video/thumbnail', variables)
+				Axios.post('/api/video/thumbnail', variables)
 					.then(response => {
 					if(response.data.success) {
 						setDuration(response.data.fileDuration)
@@ -88,7 +88,7 @@ function VideoUploadPage(props) {
 			duration: Duration,
 			thumbnail: Thumbnail,
 		}
-		axios.post('/api/video/uploadVideo', variables)
+		Axios.post('/api/video/uploadVideo', variables)
 			.then(response => {
 			if(response.data.success) {
 				message.success('성공적으로 업로드를 했습니다.')
@@ -130,7 +130,7 @@ function VideoUploadPage(props) {
 						{/* Thumbnail */}
 						{Thumbnail && 
 							<div>
-								<img src={`https://server-3051.run.goorm.io/${Thumbnail}`} alt="thumbnail" />
+								<img src={`https://localhost-temp.run.goorm.io/${Thumbnail}`} alt="thumbnail" />
 							</div>
 						}
 					</div>
