@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require("multer");
-// const { Video } = require("../models/Video");
+const { Video } = require("../models/Video");
 
 const { auth } = require("../middleware/auth");
 var ffmpeg = require("fluent-ffmpeg");
@@ -36,6 +36,14 @@ router.post('/uploadfiles', (req, res) => {
 		}
 		return res.json({ success: true, url: res.req.file.path, fileName: res.req.file.filename });
 	});
+});
+
+router.post('/uploadVideo', (req, res) => {
+	const video = new Video(req.body)
+	video.save((err, doc) => {
+		if(err) return res.json({ success: false, err });
+		return res.status(200).json({ success: true });
+	})
 });
 
 router.post("/thumbnail", (req, res) => {
