@@ -23,7 +23,10 @@ function VideoUploadPage() {
 	const [VideoTitle, setVideoTitle ] = useState("")
 	const [Description, setDescription] = useState("")
 	const [Private, setPrivate] = useState(0)
-	const [Category, setCategory] = useState("Film & Animation");
+	const [Category, setCategory] = useState("Film & Animation")
+	const [FilePath, setFilePath] = useState("")
+    const [Duration, setDuration] = useState("")
+    const [Thumbnail, setThumbnail] = useState("")
 	
 	const onTitleChange = (e) => {
 		setVideoTitle(e.currentTarget.value)
@@ -49,6 +52,22 @@ function VideoUploadPage() {
 			.then(response => {
 			if(response.data.success) {
 				console.log(response.data)
+				let variable = {
+					filePath: response.data.url,
+					fileName: response.data.fileName
+				}
+				
+				setFilePath(response.data.url)
+				
+				axios.post('/api/video/thumbnail', variable)
+					.then(response => {
+					if(response.data.success) {
+						setDuration(response.data.fileDuration)
+						setThumbnail(response.data.thumbsFilePath)
+					} else {
+						alert('썸네일 생성에 실패 했습니다.')
+					}
+				})
 			} else {
 				alert('비디오 업로드를 실패했습니다.')
 			}
@@ -82,9 +101,11 @@ function VideoUploadPage() {
 						</Dropzone>
 						
 						{/* Thumbnail */}
-						<div>
-							<img src alt />
-						</div>
+						{Thumbnail && 
+							<div>
+								<img src={`https://server-3051.run.goorm.io/${Thumbnail}`} alt="thumbnail" />
+							</div>
+						}
 					</div>
 					
 					<br />
