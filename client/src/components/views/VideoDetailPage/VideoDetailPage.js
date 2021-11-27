@@ -23,13 +23,16 @@ function VideoDetailPage(props) {
 	}, [])
 	
 	if(VideoDetail.writer) {
+		
+		let SubscribeButton = (localStorage.getItem('userId') === null || VideoDetail.writer._id !== localStorage.getItem('userId')) && <Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />;
+		
 		return (
 			<Row>
 				<Col lg={18} xs={24}>
 					<div style={{ width: '100%', padding: '3rem 4rem' }}>
 						<video style={{ width: '100%' }} src={`https://localhost-temp.run.goorm.io/${VideoDetail.filePath}`} controls />
 						<List.Item
-							actions={[<Subscribe userTo={VideoDetail.writer._id} userFrom={localStorage.getItem('userId')} />]}
+							actions={[ SubscribeButton ]}
 						>
 							<List.Item.Meta
 								avatar={<Avatar src={VideoDetail.writer.image} />}
