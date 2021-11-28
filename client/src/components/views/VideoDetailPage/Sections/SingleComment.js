@@ -50,17 +50,17 @@ function SingleComment(props) {
 				avatar={<Avatar src={props.comment.writer.image} alt="image" />}
 				content={<p> {props.comment.content}</p>}
 			/>
-			
 			{OpenReply &&
 				<form style={{ display: 'flex', marginLeft: '40px' }} onSubmit={onSubmit} >
-					<textarea
+					<TextArea 
+						autoSize={{ minRows: 2, maxRows: 6 }}
 						style={{ width: '100%', borderRadius: '5px' }}
 						onChange={onHandleChange}
 						value={CommentValue}
 						placeholder="코멘트를 작성해 주세요"
 					/>
 					<br />
-					<button style={{ width: '20%', height: '52px' }} onClick={onSubmit}>Submit</button>
+					<Button style={{ width: '20%', height: '52px' }} onClick={onSubmit}>Submit</Button>
 				</form>
 			}
 		</div>
