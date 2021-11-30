@@ -47,7 +47,7 @@ function VideoDetailPage(props) {
 					<div style={{ width: '100%', padding: '3rem 4rem' }}>
 						<video style={{ width: '100%' }} src={`https://localhost-temp.run.goorm.io/${VideoDetail.filePath}`} controls />
 						<List.Item
-							actions={[ <LikeDislikes video userId={localStorage.getItem('userId')} videoId={videoId} />,  SubscribeButton ]}
+							actions={[ <LikeDislikes video videoId={videoId} userId={localStorage.getItem('userId')} />,  SubscribeButton ]}
 						>
 							<List.Item.Meta
 								avatar={<Avatar src={VideoDetail.writer.image} />}

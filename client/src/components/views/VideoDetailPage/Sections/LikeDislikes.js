@@ -9,15 +9,15 @@ function LikeDislikes(props) {
 	const [LikeAction, setLikeAction] = useState(null);
 	const [DislikeAction, setDislikeAction] = useState(null);
 	
-	let variables = {}
+	let variable = {}
 	if(props.video) {
-		variables = { videoId: props.videoId, userId: props.userId}
+		variable = { videoId: props.videoId, userId: props.userId}
 	} else {
-		variables = { commentId: props.commentId , userId: props.userId}
+		variable = { commentId: props.commentId , userId: props.userId}
 	}
 	
 	useEffect(() => {
-		Axios.post('/api/like/getLikes', variables)
+		Axios.post('/api/like/getLikes', variable)
 		.then(response => {
 			if(response.data.success) {
 				
@@ -35,7 +35,7 @@ function LikeDislikes(props) {
 			}
 		})
 		
-		Axios.post('/api/like/getDislikes', variables)
+		Axios.post('/api/like/getDislikes', variable)
 		.then(response => {
 			if(response.data.success) {
 				
@@ -54,13 +54,69 @@ function LikeDislikes(props) {
 		})
 	}, [])
 	
+	const onLike = () => {
+		if(LikeAction === null) {
+			Axios.post('/api/like/upLike', variable)
+				.then(response => {
+				if(response.data.success) {
+					setLikes(Likes+1)
+					setLikeAction('liked')
+					if(DislikeAction !== null) {
+						setDislikeAction(null)
+						setDislikes(Dislikes-1)
+					}
+				} else {
+					alert('Like을 반영하지 못하였습니다.')
+				}
+			})
+		} else {
+			Axios.post('/api/like/unLike', variable)
+				.then(response => {
+				if(response.data.success) {
+					setLikes(Likes-1)
+					setLikeAction(null)
+				} else {
+					alert('Like을 취소하지 못하였습니다.')
+				}
+			})
+		}
+	}
+	
+	const onDislike = () => {
+		if(DislikeAction === null) {
+			Axios.post('/api/like/upDislike', variable)
+				.then(response => {
+				if(response.data.success) {
+					setDislikes(Dislikes+1)
+					setDislikeAction('disliked')
+					if(LikeAction !== null) {
+						setLikeAction(null)
+						setLikes(Likes-1)
+					}
+				} else {
+					alert('Dislike을 반영하지 못하였습니다.')
+				}
+			})
+		} else {
+			Axios.post('/api/like/unDislike', variable)
+				.then(response => {
+				if(response.data.success) {
+					setDislikes(Dislikes-1)
+					setDislikeAction(null)
+				} else {
+					alert('Dislike을 취소하지 못하였습니다.')
+				}
+			})
+		}
+	}
+	
 	return(
 		<div>
 			<span key="comment-basic-like">
 				<Tooltip title="Like">
 					<Icon type="like"
 						theme={LikeAction === 'liked' ? 'filled' : 'outlined' }
-						onClick
+						onClick={onLike}
 						
 						/>
 				</Tooltip>
@@ -71,7 +127,7 @@ function LikeDislikes(props) {
 				<Tooltip title="Dislike">
 					<Icon type="dislike"
 						theme={DislikeAction === 'disliked' ? 'filled' : 'outlined' }
-						onClick
+						onClick={onDislike}
 						
 						/>
 				</Tooltip>
