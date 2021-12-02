@@ -60,7 +60,7 @@ function VideoDetailPage(props) {
 					</div>
 				</Col>
 				<Col lg={6} xs={24}>
-					<SideVideo />
+					<SideVideo origin={videoId} />
 				</Col>
 			</Row>
 		)

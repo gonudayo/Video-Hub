@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Row, Col } from 'antd';
 import Axios from 'axios';
 
-function SideVideo() {
+function SideVideo(props) {
 	
 	const [SideVideos, setSideVideos] = useState([]);
 	
@@ -17,7 +17,8 @@ function SideVideo() {
 	}, []);
 	
 	const renderSideVideo = SideVideos.map((video, index) => {
-		
+		if(props.origin === video._id) return;
+			
 		var minutes = Math.floor(video.duration / 60);
 		var seconds = Math.floor(video.duration - minutes * 60);
 		
